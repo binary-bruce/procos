@@ -2,9 +2,9 @@ use super::__switch;
 use super::{fetch_task, TaskStatus};
 use super::{TaskContext, TaskControlBlock};
 use crate::task::Processor;
-use crate::trap::TrapContext;
 use alloc::sync::Arc;
 use lazy_static::*;
+use task::TrapContext;
 use up_safe_cell::UPSafeCell;
 
 lazy_static! {

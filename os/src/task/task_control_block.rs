@@ -5,13 +5,14 @@ use super::TaskContext;
 use super::TaskStatus;
 use crate::config::TRAP_CONTEXT;
 use crate::mm::{from_elf, from_existed_user, KERNEL_SPACE};
-use crate::trap::{trap_handler, TrapContext};
+use crate::trap::trap_handler;
 use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::cell::RefMut;
 use page_table::VirtAddr;
 use pid::pid_alloc;
 use pid::PidHandle;
+use task::TrapContext;
 use up_safe_cell::UPSafeCell;
 
 pub struct TaskControlBlock {
@@ -135,7 +136,7 @@ impl TaskControlBlock {
         // ---- release parent PCB automatically
         // **** release children PCB automatically
     }
-    
+
     pub fn getpid(&self) -> usize {
         self.pid.0
     }

@@ -4,8 +4,7 @@ use alloc::{
 };
 use memory_set::MemorySet;
 use page_table::PhysPageNum;
-
-use crate::trap::TrapContext;
+use task::TrapContext;
 
 use super::{task_control_block::TaskControlBlock, TaskContext, TaskStatus};
 

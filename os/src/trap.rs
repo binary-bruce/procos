@@ -11,11 +11,9 @@
 //! It then calls different functionality based on what exactly the exception
 //! was. For example, timer interrupts trigger task preemption, and syscalls go
 //! to [`syscall()`].
-mod context;
 mod trap_handler;
 mod trap_return;
 
-pub use context::TrapContext;
 pub use trap_handler::*;
 pub use trap_return::*;
 
