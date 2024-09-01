@@ -2,10 +2,10 @@
 
 use crate::config::{MEMORY_END, MMIO, TRAMPOLINE};
 
-use crate::sync::UPSafeCell;
 use alloc::sync::Arc;
 use lazy_static::*;
 use memory_set::*;
+use up_safe_cell::UPSafeCell;
 
 extern "C" {
     fn stext();

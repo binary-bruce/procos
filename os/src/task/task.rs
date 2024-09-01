@@ -3,12 +3,12 @@ use super::TaskContext;
 use super::{pid_alloc, KernelStack, PidHandle};
 use crate::config::TRAP_CONTEXT;
 use crate::mm::{from_elf, from_existed_user, MemorySet, KERNEL_SPACE};
-use crate::sync::UPSafeCell;
 use crate::trap::{trap_handler, TrapContext};
 use alloc::sync::{Arc, Weak};
 use alloc::vec::Vec;
 use core::cell::RefMut;
 use page_table::{PhysPageNum, VirtAddr};
+use up_safe_cell::UPSafeCell;
 
 pub struct TaskControlBlock {
     // immutable

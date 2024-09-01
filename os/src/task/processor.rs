@@ -2,10 +2,10 @@
 use super::__switch;
 use super::{fetch_task, TaskStatus};
 use super::{TaskContext, TaskControlBlock};
-use crate::sync::UPSafeCell;
 use crate::trap::TrapContext;
 use alloc::sync::Arc;
 use lazy_static::*;
+use up_safe_cell::UPSafeCell;
 ///Processor management structure
 pub struct Processor {
     ///The task currently executing on the current processor

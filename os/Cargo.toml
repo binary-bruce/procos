@@ -16,6 +16,7 @@ sbi-rt = { version = "0.0.2", features = ["legacy"] }
 heap-allocator = { git = "https://github.com/binary-bruce/naive-heap-allocator" }
 page-table = { git = "https://github.com/binary-bruce/naive-page-table" }
 memory-set = { git = "https://github.com/binary-bruce/naive-memory-set/" }
+up-safe-cell = { git = "https://github.com/binary-bruce/up-safe-cell" }
 
 [profile.release]
 debug = true

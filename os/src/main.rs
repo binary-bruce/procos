@@ -35,7 +35,6 @@ mod lang_items;
 mod loader;
 pub mod mm;
 mod sbi;
-pub mod sync;
 pub mod syscall;
 pub mod task;
 mod timer;

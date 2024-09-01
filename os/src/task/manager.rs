@@ -1,9 +1,9 @@
 //!Implementation of [`TaskManager`]
 use super::TaskControlBlock;
-use crate::sync::UPSafeCell;
 use alloc::collections::VecDeque;
 use alloc::sync::Arc;
 use lazy_static::*;
+use up_safe_cell::UPSafeCell;
 ///A array of `TaskControlBlock` that is thread-safe
 pub struct TaskManager {
     ready_queue: VecDeque<Arc<TaskControlBlock>>,
