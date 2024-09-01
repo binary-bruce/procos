@@ -9,9 +9,6 @@ edition = "2021"
 [dependencies]
 riscv = { git = "https://github.com/rcore-os/riscv", features = ["inline-asm"] }
 lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
-bitflags = "1.2.1"
-xmas-elf = "0.7.0"
-log = "0.4"
 heap-allocator = { git = "https://github.com/binary-bruce/naive-heap-allocator" }
 page-table = { git = "https://github.com/binary-bruce/naive-page-table" }
 memory-set = { git = "https://github.com/binary-bruce/naive-memory-set/" }
