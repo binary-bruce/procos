@@ -17,7 +17,6 @@
 //! We then call [`task::run_tasks()`] and for the first time go to
 //! userspace.
 
-#![deny(missing_docs)]
 #![deny(warnings)]
 #![no_std]
 #![no_main]
@@ -25,9 +24,6 @@
 #![feature(alloc_error_handler)]
 
 extern crate alloc;
-
-#[macro_use]
-extern crate bitflags;
 
 #[path = "boards/qemu.rs"]
 mod board;
@@ -64,17 +60,32 @@ fn clear_bss() {
 #[no_mangle]
 /// the rust entry-point of os
 pub fn rust_main() -> ! {
+    println!("[kernel] clear_bss");
     clear_bss();
+
     println!("[kernel] Hello, world!");
+
+    println!("[kernel] mm::init");
     mm::init();
-    mm::remap_test();
+
+    println!("[kernel] trap::add_initproc");
     task::add_initproc();
-    println!("after initproc!");
+
+    println!("[kernel] trap::init");
     trap::init();
+
+    println!("[kernel] trap::enable_timer_interrupt");
     //trap::enable_interrupt();
     trap::enable_timer_interrupt();
+
+    println!("[kernel] timer::set_next_trigger");
     timer::set_next_trigger();
+
+    println!("[kernel] loader::list_apps");
     loader::list_apps();
+
+    println!("[kernel] task::run_tasks");
     task::run_tasks();
+
     panic!("Unreachable in rust_main!");
 }
