@@ -1,11 +1,11 @@
 use crate::loader::get_app_data_by_name;
-use crate::mm::{translated_refmut, translated_str};
 use crate::task::{
     add_task, current_task, current_user_token, exit_current_and_run_next,
     suspend_current_and_run_next,
 };
 use crate::timer::get_time_ms;
 use alloc::sync::Arc;
+use page_table::{translated_refmut, translated_str};
 
 pub fn sys_exit(exit_code: i32) -> ! {
     exit_current_and_run_next(exit_code);
