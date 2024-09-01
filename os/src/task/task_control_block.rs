@@ -1,13 +1,15 @@
 //!Implementation of [`TaskControlBlock`]
+use super::task_control_block_inner::TaskControlBlockInner;
 use super::KernelStack;
 use super::TaskContext;
+use super::TaskStatus;
 use crate::config::TRAP_CONTEXT;
-use crate::mm::{from_elf, from_existed_user, MemorySet, KERNEL_SPACE};
+use crate::mm::{from_elf, from_existed_user, KERNEL_SPACE};
 use crate::trap::{trap_handler, TrapContext};
-use alloc::sync::{Arc, Weak};
+use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::cell::RefMut;
-use page_table::{PhysPageNum, VirtAddr};
+use page_table::VirtAddr;
 use pid::pid_alloc;
 use pid::PidHandle;
 use up_safe_cell::UPSafeCell;
@@ -20,42 +22,11 @@ pub struct TaskControlBlock {
     inner: UPSafeCell<TaskControlBlockInner>,
 }
 
-pub struct TaskControlBlockInner {
-    pub trap_cx_ppn: PhysPageNum,
-    #[allow(unused)]
-    pub base_size: usize,
-    pub task_cx: TaskContext,
-    pub task_status: TaskStatus,
-    pub memory_set: MemorySet,
-    pub parent: Option<Weak<TaskControlBlock>>,
-    pub children: Vec<Arc<TaskControlBlock>>,
-    pub exit_code: i32,
-}
-
-impl TaskControlBlockInner {
-    /*
-    pub fn get_task_cx_ptr2(&self) -> *const usize {
-        &self.task_cx_ptr as *const usize
-    }
-    */
-    pub fn get_trap_cx(&self) -> &'static mut TrapContext {
-        self.trap_cx_ppn.get_mut()
-    }
-    pub fn get_user_token(&self) -> usize {
-        self.memory_set.token()
-    }
-    fn get_status(&self) -> TaskStatus {
-        self.task_status
-    }
-    pub fn is_zombie(&self) -> bool {
-        self.get_status() == TaskStatus::Zombie
-    }
-}
-
 impl TaskControlBlock {
     pub fn inner_exclusive_access(&self) -> RefMut<'_, TaskControlBlockInner> {
         self.inner.exclusive_access()
     }
+
     pub fn new(elf_data: &[u8]) -> Self {
         // memory_set with elf program headers/trampoline/trap context/user stack
         let (memory_set, user_sp, entry_point) = from_elf(elf_data);
@@ -95,6 +66,7 @@ impl TaskControlBlock {
         );
         task_control_block
     }
+
     pub fn exec(&self, elf_data: &[u8]) {
         // memory_set with elf program headers/trampoline/trap context/user stack
         let (memory_set, user_sp, entry_point) = from_elf(elf_data);
@@ -122,6 +94,7 @@ impl TaskControlBlock {
         );
         // **** release inner automatically
     }
+
     pub fn fork(self: &Arc<Self>) -> Arc<Self> {
         // ---- access parent PCB exclusively
         let mut parent_inner = self.inner_exclusive_access();
@@ -162,14 +135,8 @@ impl TaskControlBlock {
         // ---- release parent PCB automatically
         // **** release children PCB automatically
     }
+    
     pub fn getpid(&self) -> usize {
         self.pid.0
     }
-}
-
-#[derive(Copy, Clone, PartialEq)]
-pub enum TaskStatus {
-    Ready,
-    Running,
-    Zombie,
 }

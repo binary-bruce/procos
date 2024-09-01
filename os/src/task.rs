@@ -20,7 +20,9 @@ mod manager;
 mod processor;
 mod switch;
 #[allow(clippy::module_inception)]
-mod task;
+mod task_control_block;
+mod task_control_block_inner;
+mod task_status;
 
 use crate::loader::get_app_data_by_name;
 use alloc::sync::Arc;
@@ -28,7 +30,7 @@ use lazy_static::*;
 pub use manager::{fetch_task, TaskManager};
 use sbi_utils::{println, shutdown};
 use switch::__switch;
-use task::{TaskControlBlock, TaskStatus};
+use task_control_block::TaskControlBlock;
 
 pub use context::TaskContext;
 pub use kernel_stack::KernelStack;
@@ -37,6 +39,8 @@ pub use processor::{
     current_task, current_trap_cx, current_user_token, run_tasks, schedule, take_current_task,
     Processor,
 };
+pub use task_status::TaskStatus;
+
 /// Suspend the current 'Running' task and run the next task in task list.
 pub fn suspend_current_and_run_next() {
     // There must be an application running.
@@ -115,6 +119,7 @@ lazy_static! {
         get_app_data_by_name("initproc").unwrap()
     ));
 }
+
 ///Add init process to the manager
 pub fn add_initproc() {
     add_task(INITPROC.clone());
