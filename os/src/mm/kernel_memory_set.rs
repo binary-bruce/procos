@@ -5,7 +5,6 @@ use crate::config::{MEMORY_END, MMIO, TRAMPOLINE};
 use alloc::sync::Arc;
 use lazy_static::*;
 use memory_set::*;
-use sbi_utils::println;
 use up_safe_cell::UPSafeCell;
 
 extern "C" {

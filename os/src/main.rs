@@ -36,9 +36,10 @@ pub mod task;
 mod timer;
 pub mod trap;
 
-use core::{arch::global_asm, panic::PanicInfo};
+#[macro_use]
+extern crate sbi_utils;
 
-use sbi_utils::println;
+use core::{arch::global_asm, panic::PanicInfo};
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
