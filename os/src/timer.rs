@@ -1,8 +1,8 @@
 //! RISC-V timer-related functionality
 
 use crate::config::CLOCK_FREQ;
-use crate::sbi::set_timer;
 use riscv::register::time;
+use sbi_utils::set_timer;
 
 const TICKS_PER_SEC: usize = 100;
 const MSEC_PER_SEC: usize = 1000;

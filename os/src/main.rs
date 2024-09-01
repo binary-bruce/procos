@@ -28,22 +28,27 @@ extern crate alloc;
 #[path = "boards/qemu.rs"]
 mod board;
 
-#[macro_use]
-mod console;
 mod config;
-mod lang_items;
 mod loader;
 pub mod mm;
-mod sbi;
 pub mod syscall;
 pub mod task;
 mod timer;
 pub mod trap;
 
-use core::arch::global_asm;
+#[macro_use]
+extern crate sbi_utils;
+
+use core::{arch::global_asm, panic::PanicInfo};
+
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    sbi_utils::panic_handler(info)
+}
 
 global_asm!(include_str!("entry.asm"));
 global_asm!(include_str!("link_app.S"));
+
 /// clear BSS segment
 fn clear_bss() {
     extern "C" {
@@ -51,8 +56,9 @@ fn clear_bss() {
         fn ebss();
     }
     unsafe {
-        core::slice::from_raw_parts_mut(sbss as usize as *mut u8, ebss as usize - sbss as usize)
-            .fill(0);
+        let data = sbss as usize as *mut u8;
+        let len = ebss as usize - sbss as usize;
+        core::slice::from_raw_parts_mut(data, len).fill(0);
     }
 }
 

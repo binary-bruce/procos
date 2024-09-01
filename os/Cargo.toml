@@ -12,12 +12,12 @@ lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
 bitflags = "1.2.1"
 xmas-elf = "0.7.0"
 log = "0.4"
-sbi-rt = { version = "0.0.2", features = ["legacy"] }
 heap-allocator = { git = "https://github.com/binary-bruce/naive-heap-allocator" }
 page-table = { git = "https://github.com/binary-bruce/naive-page-table" }
 memory-set = { git = "https://github.com/binary-bruce/naive-memory-set/" }
 up-safe-cell = { git = "https://github.com/binary-bruce/up-safe-cell" }
 pid = { git = "https://github.com/binary-bruce/pid" }
+sbi-utils = { git = "https://github.com/binary-bruce/sbi-utils" }
 
 [profile.release]
 debug = true
