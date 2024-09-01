@@ -5,18 +5,21 @@
 //! map area and memory set, is implemented here.
 //!
 //! Every task or process has a memory_set to control its virtual memory.
-mod memory_set;
 
-pub use memory_set::remap_test;
-pub use memory_set::{MapPermission, MemorySet, KERNEL_SPACE};
+mod kernel_memory_set;
+mod user_memory_set;
+
+pub use kernel_memory_set::KERNEL_SPACE;
+pub use memory_set::{MapPermission, MemorySet};
 pub use page_table::{translated_byte_buffer, translated_str, PageTableEntry};
-use page_table::{PTEFlags, PageTable};
 
 use crate::board::MEMORY_END;
 use crate::config::KERNEL_HEAP_SIZE;
 
 /// heap space ([u8; KERNEL_HEAP_SIZE])
 static mut HEAP_SPACE: [u8; KERNEL_HEAP_SIZE] = [0; KERNEL_HEAP_SIZE];
+
+pub use user_memory_set::*;
 
 /// initiate heap allocator, frame allocator and kernel space
 pub fn init() {
