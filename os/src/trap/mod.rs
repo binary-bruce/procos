@@ -135,3 +135,4 @@ pub fn trap_from_kernel() -> ! {
 }
 
 pub use context::TrapContext;
+use sbi_utils::println;

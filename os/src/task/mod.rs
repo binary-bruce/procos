@@ -23,10 +23,10 @@ mod switch;
 mod task;
 
 use crate::loader::get_app_data_by_name;
-use crate::sbi::shutdown;
 use alloc::sync::Arc;
 use lazy_static::*;
 pub use manager::{fetch_task, TaskManager};
+use sbi_utils::{println, shutdown};
 use switch::__switch;
 use task::{TaskControlBlock, TaskStatus};
 
