@@ -1,8 +1,6 @@
 //! Implementation of [`MapArea`] and [`MemorySet`].
-use super::{frame_alloc, FrameTracker};
+
 use super::{PTEFlags, PageTable, PageTableEntry};
-use super::{PhysAddr, PhysPageNum, VirtAddr, VirtPageNum};
-use super::{StepByOne, VPNRange};
 use crate::config::{MEMORY_END, MMIO, PAGE_SIZE, TRAMPOLINE, TRAP_CONTEXT, USER_STACK_SIZE};
 use crate::sync::UPSafeCell;
 use alloc::collections::BTreeMap;
@@ -10,6 +8,9 @@ use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::arch::asm;
 use lazy_static::*;
+use page_table::{
+    frame_alloc, FrameTracker, PhysAddr, PhysPageNum, StepByOne, VPNRange, VirtAddr, VirtPageNum,
+};
 use riscv::register::satp;
 
 extern "C" {
