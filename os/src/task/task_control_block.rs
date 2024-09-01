@@ -5,13 +5,15 @@ use super::TaskContext;
 use super::TaskStatus;
 use crate::config::TRAP_CONTEXT;
 use crate::mm::{from_elf, from_existed_user, KERNEL_SPACE};
-use crate::trap::{trap_handler, TrapContext};
+use crate::trap::trap_handler;
+use crate::trap::trap_return;
 use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::cell::RefMut;
 use page_table::VirtAddr;
 use pid::pid_alloc;
 use pid::PidHandle;
+use task::TrapContext;
 use up_safe_cell::UPSafeCell;
 
 pub struct TaskControlBlock {
@@ -46,7 +48,7 @@ impl TaskControlBlock {
                 UPSafeCell::new(TaskControlBlockInner {
                     trap_cx_ppn,
                     base_size: user_sp,
-                    task_cx: TaskContext::goto_trap_return(kernel_stack_top),
+                    task_cx: TaskContext::init(trap_return as usize, kernel_stack_top),
                     task_status: TaskStatus::Ready,
                     memory_set,
                     parent: None,
@@ -115,7 +117,7 @@ impl TaskControlBlock {
                 UPSafeCell::new(TaskControlBlockInner {
                     trap_cx_ppn,
                     base_size: parent_inner.base_size,
-                    task_cx: TaskContext::goto_trap_return(kernel_stack_top),
+                    task_cx: TaskContext::init(trap_return as usize, kernel_stack_top),
                     task_status: TaskStatus::Ready,
                     memory_set,
                     parent: Some(Arc::downgrade(self)),
@@ -135,7 +137,7 @@ impl TaskControlBlock {
         // ---- release parent PCB automatically
         // **** release children PCB automatically
     }
-    
+
     pub fn getpid(&self) -> usize {
         self.pid.0
     }

@@ -15,6 +15,7 @@ memory-set = { git = "https://github.com/binary-bruce/naive-memory-set/" }
 up-safe-cell = { git = "https://github.com/binary-bruce/up-safe-cell" }
 pid = { git = "https://github.com/binary-bruce/pid" }
 sbi-utils = { git = "https://github.com/binary-bruce/sbi-utils" }
+task = { path = "../task" }
 
 [profile.release]
 debug = true

@@ -4,8 +4,7 @@ use alloc::{
 };
 use memory_set::MemorySet;
 use page_table::PhysPageNum;
-
-use crate::trap::TrapContext;
+use task::TrapContext;
 
 use super::{task_control_block::TaskControlBlock, TaskContext, TaskStatus};
 
@@ -22,11 +21,6 @@ pub struct TaskControlBlockInner {
 }
 
 impl TaskControlBlockInner {
-    /*
-    pub fn get_task_cx_ptr2(&self) -> *const usize {
-        &self.task_cx_ptr as *const usize
-    }
-    */
     pub fn get_trap_cx(&self) -> &'static mut TrapContext {
         self.trap_cx_ppn.get_mut()
     }

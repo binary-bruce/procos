@@ -1,6 +1,23 @@
 use super::TaskControlBlock;
 use alloc::collections::VecDeque;
 use alloc::sync::Arc;
+use lazy_static::*;
+use up_safe_cell::UPSafeCell;
+
+lazy_static! {
+    pub static ref TASK_MANAGER: UPSafeCell<TaskManager> =
+        unsafe { UPSafeCell::new(TaskManager::new()) };
+}
+
+/// Interface offered to add task
+pub fn add_task(task: Arc<TaskControlBlock>) {
+    TASK_MANAGER.exclusive_access().add(task);
+}
+
+/// Interface offered to pop the first task
+pub fn fetch_task() -> Option<Arc<TaskControlBlock>> {
+    TASK_MANAGER.exclusive_access().fetch()
+}
 
 /// A array of `TaskControlBlock` that is thread-safe
 pub struct TaskManager {

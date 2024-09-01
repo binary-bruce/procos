@@ -14,32 +14,26 @@
 //!
 //! Be careful when you see `__switch` ASM function in `switch.S`. Control flow around this function
 //! might not be what you expect.
-mod context;
+
 mod kernel_stack;
-mod manage_tasks;
 mod processor;
-mod run_task;
 mod switch;
 #[allow(clippy::module_inception)]
 mod task_control_block;
 mod task_control_block_inner;
 mod task_manager;
-mod task_status;
 
 use crate::loader::get_app_data_by_name;
 use alloc::sync::Arc;
 use lazy_static::*;
-pub use manage_tasks::fetch_task;
 use sbi_utils::{println, shutdown};
 use switch::__switch;
+use task::{TaskContext, TaskStatus};
 use task_control_block::TaskControlBlock;
 
-pub use context::TaskContext;
 pub use kernel_stack::KernelStack;
-pub use manage_tasks::add_task;
-pub use processor::Processor;
-pub use run_task::*;
-pub use task_status::TaskStatus;
+pub use processor::*;
+pub use task_manager::*;
 
 /// Suspend the current 'Running' task and run the next task in task list.
 pub fn suspend_current_and_run_next() {
