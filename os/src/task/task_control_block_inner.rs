@@ -21,11 +21,6 @@ pub struct TaskControlBlockInner {
 }
 
 impl TaskControlBlockInner {
-    /*
-    pub fn get_task_cx_ptr2(&self) -> *const usize {
-        &self.task_cx_ptr as *const usize
-    }
-    */
     pub fn get_trap_cx(&self) -> &'static mut TrapContext {
         self.trap_cx_ppn.get_mut()
     }
