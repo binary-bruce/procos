@@ -14,7 +14,7 @@
 //!
 //! Be careful when you see `__switch` ASM function in `switch.S`. Control flow around this function
 //! might not be what you expect.
-mod context;
+
 mod kernel_stack;
 mod manage_tasks;
 mod processor;
@@ -31,10 +31,9 @@ use lazy_static::*;
 pub use manage_tasks::fetch_task;
 use sbi_utils::{println, shutdown};
 use switch::__switch;
-use task::TaskStatus;
+use task::{TaskContext, TaskStatus};
 use task_control_block::TaskControlBlock;
 
-pub use context::TaskContext;
 pub use kernel_stack::KernelStack;
 pub use manage_tasks::add_task;
 pub use processor::Processor;

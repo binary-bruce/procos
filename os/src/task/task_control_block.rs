@@ -6,6 +6,7 @@ use super::TaskStatus;
 use crate::config::TRAP_CONTEXT;
 use crate::mm::{from_elf, from_existed_user, KERNEL_SPACE};
 use crate::trap::trap_handler;
+use crate::trap::trap_return;
 use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::cell::RefMut;
@@ -47,7 +48,7 @@ impl TaskControlBlock {
                 UPSafeCell::new(TaskControlBlockInner {
                     trap_cx_ppn,
                     base_size: user_sp,
-                    task_cx: TaskContext::goto_trap_return(kernel_stack_top),
+                    task_cx: TaskContext::init(trap_return as usize, kernel_stack_top),
                     task_status: TaskStatus::Ready,
                     memory_set,
                     parent: None,
@@ -116,7 +117,7 @@ impl TaskControlBlock {
                 UPSafeCell::new(TaskControlBlockInner {
                     trap_cx_ppn,
                     base_size: parent_inner.base_size,
-                    task_cx: TaskContext::goto_trap_return(kernel_stack_top),
+                    task_cx: TaskContext::init(trap_return as usize, kernel_stack_top),
                     task_status: TaskStatus::Ready,
                     memory_set,
                     parent: Some(Arc::downgrade(self)),
