@@ -1,9 +1,9 @@
 //!Implementation of [`TaskControlBlock`]
 use super::task_control_block_inner::TaskControlBlockInner;
-use super::KernelStack;
 use super::TaskContext;
 use super::TaskStatus;
 use crate::config::TRAP_CONTEXT;
+use crate::mm::KernelStack;
 use crate::mm::{from_elf, from_existed_user, KERNEL_SPACE};
 use crate::trap::trap_handler;
 use crate::trap::trap_return;

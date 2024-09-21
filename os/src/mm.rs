@@ -7,9 +7,11 @@
 //! Every task or process has a memory_set to control its virtual memory.
 
 mod kernel_memory_set;
+mod kernel_stack;
 mod user_memory_set;
 
 pub use kernel_memory_set::KERNEL_SPACE;
+pub use kernel_stack::KernelStack;
 pub use memory_set::{MapPermission, MemorySet};
 pub use page_table::{translated_byte_buffer, translated_str, PageTableEntry};
 

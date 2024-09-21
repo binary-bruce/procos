@@ -15,7 +15,6 @@
 //! Be careful when you see `__switch` ASM function in `switch.S`. Control flow around this function
 //! might not be what you expect.
 
-mod kernel_stack;
 mod processor;
 mod switch;
 #[allow(clippy::module_inception)]
@@ -31,7 +30,6 @@ use switch::__switch;
 use task::{TaskContext, TaskStatus};
 use task_control_block::TaskControlBlock;
 
-pub use kernel_stack::KernelStack;
 pub use processor::*;
 pub use task_manager::*;
 
