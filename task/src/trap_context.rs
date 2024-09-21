@@ -28,6 +28,7 @@ impl TrapContext {
     pub fn set_sp(&mut self, sp: usize) {
         self.x[2] = sp;
     }
+    
     ///init app context
     pub fn app_init_context(
         entry: usize,
